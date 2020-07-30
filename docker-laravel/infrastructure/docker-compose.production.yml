@@ -1,0 +1,36 @@
+version: "3.8"
+
+volumes:
+  db-store:
+  php-fpm-socket:
+  
+services:
+  app:
+    build: ./docker/php
+    volumes:
+      - php-fpm-socket:/var/run/php-fpm
+      - ../backend:/work/backend
+    environment:
+      VIRTUAL_HOST: example.com
+      LETSENCRYPT_HOST: example.com
+      LETSENCRYPT_EMAIL: example@example.scom
+    restart: always
+
+  web:
+    build: ./docker/nginx
+    volumes:
+      - php-fpm-socket:/var/run/php-fpm
+      - ../backend:/work/backend
+    restart: always
+
+  db:
+    build: ./docker/mysql
+    volumes:
+      - db-store:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+networks:
+  default:
+    external:
+      name: nginx-proxy_default
