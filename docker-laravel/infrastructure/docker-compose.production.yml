@@ -10,10 +10,6 @@ services:
     volumes:
       - php-fpm-socket:/var/run/php-fpm
       - ../backend:/work/backend
-    environment:
-      VIRTUAL_HOST: example.com
-      LETSENCRYPT_HOST: example.com
-      LETSENCRYPT_EMAIL: example@example.scom
     restart: always
 
   web:
@@ -21,6 +17,10 @@ services:
     volumes:
       - php-fpm-socket:/var/run/php-fpm
       - ../backend:/work/backend
+    environment:
+      VIRTUAL_HOST: example.com
+      LETSENCRYPT_HOST: example.com
+      LETSENCRYPT_EMAIL: example@example.scom
     restart: always
 
   db:
